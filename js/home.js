@@ -2,7 +2,7 @@ var nodes = [];
 var nNodes = [];
 
 var width = 500,
-    height = 600;
+    height = 500;
 
 d3.json("data/mindscape.json").then(function(links) {
     links.forEach(function(link) {
@@ -28,8 +28,8 @@ d3.json("data/mindscape.json").then(function(links) {
     var svg = d3.select("forum")
         .append("svg")
         .attr("width", width)
-        .attr("height", height)
-;
+        .attr("height", height),
+        g = svg.append("g");
     
         // forces
     var r = d3.forceRadial(180),
@@ -50,10 +50,14 @@ d3.json("data/mindscape.json").then(function(links) {
         .force("center", center)
         .force("link", link);
     
+    var zoom = d3.zoom()
+        .on("zoom", zoom_actions);
+    
     simulation.on("tick", tick);
+    zoom(svg);
 
     // create tear drop shape
-    var path = svg.append("g").selectAll("path")
+    var path = g.selectAll("path")
         .data(links)
         .enter().append("path")
         .style("fill", "#669999")
@@ -61,7 +65,7 @@ d3.json("data/mindscape.json").then(function(links) {
         .style("opacity", "0.5")
         .attr("class", "link").attr("marker-end", "url(#end)");
 
-    var node = svg.append("g").selectAll("circle")
+    var node = g.selectAll("circle")
         .data(nNodes)
       .enter().append("circle")
         .attr("r", 20)
@@ -71,7 +75,7 @@ d3.json("data/mindscape.json").then(function(links) {
           .on("drag", dragged)
           .on("end", dragended));
 
-    var text = svg.append("g").selectAll("text")
+    var text = g.selectAll("text")
         .data(nNodes)
         .enter().append("text")
         .attr("x", 3)
@@ -130,6 +134,9 @@ d3.json("data/mindscape.json").then(function(links) {
     console.log("error")
 });
 
+function zoom_actions(){
+    g.attr("transform", d3.event.transform);
+}
 
 // drag functions
 function dragstarted(d) {

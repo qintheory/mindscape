@@ -34,7 +34,6 @@ var text = g.attr("class", "texts")
 
 // DEFINE LINKS    
 var link = g.attr("stroke", "#333")
-    .attr("stroke-width", 1.5)
     .selectAll("path");
     
 var links = [];
@@ -60,13 +59,11 @@ svg.append("defs").selectAll("marker")
     .attr("d", "M0,-5L10,0L0,5");    
         
 // DEFINE FORCES    
-var simulation = d3.forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(-800))
-//    .force("link", d3.forceLink(links).distance(50))
+var simulation = d3.forceSimulation()
     .force("x", d3.forceX())
     .force("y", d3.forceY())
-    .alphaTarget(0.5)
-    .force("r", d3.forceRadial(300))
+    .alphaTarget(0.2)
+//    .force("r", d3.forceRadial(10))
     .force("center", d3.forceCenter(width / 2, height / 2))
     .on("tick", tick);   
 
@@ -100,8 +97,6 @@ function drawNode(name){
 
 
 function updateNodes(d, i) {
-    console.log("update nodes")
-    
     // update id # of the node
     nodes.forEach(function(d, i){
        d.id = i;
@@ -141,6 +136,7 @@ function updateNodes(d, i) {
             .attr("x", 8)
             .attr("y", ".31em")
             .style("z-index", 8)
+            .style("opacity", 0.5)
             .merge(text)
             .attr("id", function(d){ return d.id; })
             .text(function(d) { return d.name })
@@ -154,7 +150,7 @@ function updateNodes(d, i) {
 // ENABLING LINK MAKING FROM NODES     
 function linkingBegins() {
     simulation
-        .force("charge", d3.forceManyBody().strength(-1800))
+        .force("charge", d3.forceManyBody().strength(-200))
         .force("collide", d3.forceCollide().radius(10));
     
     
@@ -305,13 +301,7 @@ function untangle(){
         .on("end", dragended));
    
     analysis(links);  
-    
-//    data-netlify="true"
-      var graphAnalysis = JSON.stringify(links);
-     $("#graph-analysis").text(graphAnalysis);
-//    console.log(graphAnalysis);
-     $("#analysis-button").show().text("analysis");   
-
+    var graphAnalysis = JSON.stringify(links);
 }
 
 $("#my-form").submit(function(e) {
