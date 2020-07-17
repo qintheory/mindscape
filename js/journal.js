@@ -59,8 +59,8 @@ d3.json("data/fly.json").then(function(links) {
         .attr("class", "path")
         .data(links)
         .enter().append("path")
-       .style("fill", "#f7dd16")
-        .style("stroke", "none")
+       .style("fill", "#f6f6f6")
+        .style("stroke", "#333")
         .style("opacity", "0.5")
         .attr("class", "link").attr("marker-end", "url(#end)");
 
@@ -81,7 +81,7 @@ d3.json("data/fly.json").then(function(links) {
         .attr("x", 3)
         .attr("y", ".3em")
         .style("font-size", function(d){return (d.name.size+2) * 5})
-        .style("fill", "aliceblue")
+        .style("fill", "#333")
         .style("opacity", 0.6)
         .text(function(d) { return d.name.name; });
 
@@ -136,6 +136,60 @@ d3.json("data/fly.json").then(function(links) {
     simulation.on("tick", tick);
     zoom(svg);
     
+    /// UI
+    $(document).ready(function(){
+        console.log("document ready");
+        $("#light").hide();
+    });
+
+    $("#light").click(function(){
+        $("#light").toggle();
+        backgroundColor = "light";
+        console.log(backgroundColor);
+        $("#dark").toggle();
+        setBackground();
+
+    })
+
+    $("#dark").click(function(){
+        $("#dark").toggle();
+        backgroundColor = "dark";
+        console.log(backgroundColor);
+        $("#light").toggle();
+        setBackground();
+    })
+
+    function setBackground(){
+        if(backgroundColor === "dark"){
+        $("body").css({
+            "background-color": "#16103b", 
+        });
+            
+        $(".nav-container").css({
+            "background-color": "#16103b", 
+        });    
+            
+        path.style("fill", "#f7dd16")
+            .style("stroke", "none");
+            
+        text.style("fill", "aliceblue");    
+        console.log("background is light");
+        } else {
+        $("body").css({
+            "background-color": "#669999",
+        });
+        $(".nav-container").css({
+            "background-color": "#669999", 
+        });  
+            
+        path.style("fill", "aliceblue")
+            .style("stroke", "#333");
+            
+        text.style("fill", "#333"); 
+            
+        console.log("background is dark");
+        }
+    }    
 })
 .catch(function(error){
     console.log("error")
@@ -155,56 +209,3 @@ function dragged(d) {
 function dragended(d) {
   d3.select(this).classed("active", false);
 }
-
-/// UI
-$(document).ready(function(){
-    console.log("document ready");
-    $("body").css({
-        "background-color": "#16103b", 
-    });
-    $(".nav-container").css({
-        "background-color": "#16103b", 
-    }); 
-    $("#dark").hide();
-});
-
-$("#light").click(function(){
-    $("#light").toggle();
-    backgroundColor = "light";
-    console.log(backgroundColor);
-    $("#dark").toggle();
-    setBackground();
-
-})
-
-$("#dark").click(function(){
-    $("#dark").toggle();
-    backgroundColor = "dark";
-    console.log(backgroundColor);
-    $("#light").toggle();
-    setBackground();
-})
-
-function setBackground(){
-    if(backgroundColor === "dark"){
-    $("body").css({
-        "background-color": "#16103b", 
-    });
-    $(".nav-container").css({
-        "background-color": "#16103b", 
-    });    
-    $("path").attr({
-        "fill": "aliceblue"
-    });       
-    console.log("background is light");
-    } else {
-    $("body").css({
-        "background-color": "#669999",
-    });
-    $(".nav-container").css({
-        "background-color": "#669999", 
-    });     
-    console.log("background is dark");
-    }
-}
-
