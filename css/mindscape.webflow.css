@@ -15,11 +15,6 @@ svg{
     opacity: 0.9;
 }
 
-.text {
-    font-family: 'Helvetica neu', sans-serif;
-    color: #333;
-}
-
 .navbar {
   position: fixed;
   left: 0%;
@@ -46,14 +41,12 @@ svg{
   font-family: Helveticaneuelt, sans-serif;
   color: #f6f6f6;
   letter-spacing: 3px;
-  text-transform: uppercase;
 }
 
 .nav-link.w--current {
-  font-family: 'Helvetica neu', sans-serif;
-  color: #f0f8ff;
-  text-decoration: none;
-  text-transform: uppercase;
+  font-family: Helveticaneuebd, sans-serif;
+  color: #f6f6f6;
+  letter-spacing: 3px;
 }
 
 .section {
@@ -257,8 +250,8 @@ svg{
 }
 
 .button {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 30px;
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 20px;
@@ -397,8 +390,8 @@ svg{
   font-size: 20px;
   letter-spacing: 3px;
   text-decoration: none;
-  text-transform: uppercase;
   cursor: pointer;
+  opacity: 0.8;
 }
 
 .body-view {
@@ -420,7 +413,7 @@ svg{
   min-width: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 10px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;

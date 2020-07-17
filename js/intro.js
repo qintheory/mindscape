@@ -130,6 +130,10 @@ d3.json("data/mindscape.json").then(function(links) {
     console.log("error")
 });
 
+
+
+
+
 // drag functions
 function dragstarted(d) {
   d3.select(this).raise().classed("active", true);
@@ -139,9 +143,9 @@ function dragged(d) {
   d3.select(this).select("text")
     .attr("x", d.x = d3.event.x)
     .attr("y", d.y = d3.event.y);
-  d3.select(this).select("rect")
-    .attr("x", d.x = d3.event.x)
-    .attr("y", d.y = d3.event.y);
+//  d3.select(this).select("rect")
+//    .attr("x", d.x = d3.event.x)
+//    .attr("y", d.y = d3.event.y);
 }
 
 function dragended(d) {

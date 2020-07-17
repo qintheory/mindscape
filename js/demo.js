@@ -304,14 +304,7 @@ function untangle(){
     var graphAnalysis = JSON.stringify(links);
 }
 
-$("#my-form").submit(function(e) {
-  e.preventDefault();
 
-var $form = $(this);
-  $.post($form.attr("action"), $form.serialize()).then(function() {
-    alert("Thank you!");
-  });
-});
 
 function linkDistance(d){
     return 50 * d.time;

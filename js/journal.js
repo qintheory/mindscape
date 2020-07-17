@@ -33,14 +33,14 @@ d3.json("data/fly.json").then(function(links) {
 ;
     
         // forces
-    var r = d3.forceRadial(10),
+    var r = d3.forceRadial(300),
         x = d3.forceX(width),
         y = d3.forceY(height),
-        charge = d3.forceCollide().radius(-5),
+        charge = d3.forceCollide().radius(-80),
         attract = d3.forceManyBody().strength(2),
         center = d3.forceCenter(width/2, height/2),
-        collide = d3.forceCollide().radius(25).iterations(5),
-        link = d3.forceLink(links).distance(5);
+        collide = d3.forceCollide().radius(35).iterations(5),
+        link = d3.forceLink(links).distance(20);
      
     var simulation = d3.forceSimulation(nNodes).alphaTarget(0.5).velocityDecay(0.6)
         .force("charge", charge)
@@ -56,9 +56,11 @@ d3.json("data/fly.json").then(function(links) {
 
     // create tear drop shape
     var path = g.selectAll("path")
+        .attr("class", "path")
         .data(links)
         .enter().append("path")
-       .style("fill", "#f6f6f6")
+       .style("fill", "#f7dd16")
+        .style("stroke", "none")
         .style("opacity", "0.5")
         .attr("class", "link").attr("marker-end", "url(#end)");
 
@@ -73,12 +75,13 @@ d3.json("data/fly.json").then(function(links) {
           .on("end", dragended));
 
     var text = g.selectAll("text")
+        .attr("class", "text")
         .data(nNodes)
         .enter().append("text")
         .attr("x", 3)
         .attr("y", ".3em")
         .style("font-size", function(d){return (d.name.size+2) * 5})
-        .style("fill", "#333")
+        .style("fill", "aliceblue")
         .style("opacity", 0.6)
         .text(function(d) { return d.name.name; });
 
@@ -99,7 +102,7 @@ d3.json("data/fly.json").then(function(links) {
       var dx = parseFloat(d.target.x) - parseFloat(d.source.x);
       var dy = parseFloat(d.target.y) - parseFloat(d.source.y);
       var dr = Math.sqrt(dx * dx + dy * dy);
-      var r =  d.source.name.size*0.1; 
+      var r =  d.source.name.size*10; 
       var xPad,
           yPad; 
          
@@ -116,7 +119,7 @@ d3.json("data/fly.json").then(function(links) {
         }
         
         l = Math.sqrt(dx * dx + r * r);   
-        let tearWidth = 1.03;
+        let tearWidth = 1.05;
         let path = 
         `M ${d.target.x} ${d.target.y}, 
         Q ${xPad*tearWidth} ${yPad*tearWidth}, ${d.source.x} ${d.source.y}, 
@@ -138,9 +141,6 @@ d3.json("data/fly.json").then(function(links) {
     console.log("error")
 });
 
-
-
-
 // drag functions
 function dragstarted(d) {
   d3.select(this).raise().classed("active", true);
@@ -150,11 +150,61 @@ function dragged(d) {
   d3.select(this).select("text")
     .attr("x", d.x = d3.event.x)
     .attr("y", d.y = d3.event.y);
-//  d3.select(this).select("rect")
-//    .attr("x", d.x = d3.event.x)
-//    .attr("y", d.y = d3.event.y);
 }
 
 function dragended(d) {
   d3.select(this).classed("active", false);
 }
+
+/// UI
+$(document).ready(function(){
+    console.log("document ready");
+    $("body").css({
+        "background-color": "#16103b", 
+    });
+    $(".nav-container").css({
+        "background-color": "#16103b", 
+    }); 
+    $("#dark").hide();
+});
+
+$("#light").click(function(){
+    $("#light").toggle();
+    backgroundColor = "light";
+    console.log(backgroundColor);
+    $("#dark").toggle();
+    setBackground();
+
+})
+
+$("#dark").click(function(){
+    $("#dark").toggle();
+    backgroundColor = "dark";
+    console.log(backgroundColor);
+    $("#light").toggle();
+    setBackground();
+})
+
+function setBackground(){
+    if(backgroundColor === "dark"){
+    $("body").css({
+        "background-color": "#16103b", 
+    });
+    $(".nav-container").css({
+        "background-color": "#16103b", 
+    });    
+    $("path").attr({
+        "fill": "aliceblue"
+    });       
+    console.log("background is light");
+    } else {
+    $("body").css({
+        "background-color": "#669999",
+    });
+    $(".nav-container").css({
+        "background-color": "#669999", 
+    });     
+    console.log("background is dark");
+    }
+}
+
