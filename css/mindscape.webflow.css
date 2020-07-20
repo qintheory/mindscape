@@ -370,7 +370,7 @@ svg{
 }
 
 .form {
-  height: 400px;
+  height: auto;
   text-align: center;
 }
 
@@ -536,7 +536,7 @@ svg{
 
 @media screen and (max-width: 991px) {
   .navbar {
-    width: auto;
+    width: auto;  
   }
   .section {
     margin-left: 0px;
@@ -555,6 +555,7 @@ svg{
   }
   .nav-menu {
     margin-top: 0px;
+    padding-left: 25px;  
     padding-top: 60px;
     background-color: #699;
   }

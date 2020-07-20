@@ -1,4 +1,4 @@
- var time, date1, date2;
+var time, date1, date2;
 
 // numerate the nodes    
 var id = 0;   
@@ -95,6 +95,36 @@ function drawNode(name){
    linkingBegins();
 }
 
+function butterfly(d) {
+  var dx = parseFloat(d.target.x) - parseFloat(d.source.x);
+  var dy = parseFloat(d.target.y) - parseFloat(d.source.y);
+  var dr = Math.sqrt(dx * dx + dy * dy);
+  var r =  d.source.name.size*10; 
+  var xPad,
+      yPad; 
+
+    if(d.target.x < d.source.x) {
+        xPad = d.source.x - r;
+    } else {
+        xPad = d.source.x + r;
+    }
+
+    if(d.target.y < d.source.y) {
+        yPad = d.source.y + r;
+    } else {
+        yPad = d.source.y - r;
+    }
+
+    l = Math.sqrt(dx * dx + r * r);   
+    let tearWidth = 1.05;
+    let path = 
+    `M ${d.target.x} ${d.target.y}, 
+    Q ${xPad*tearWidth} ${yPad*tearWidth}, ${d.source.x} ${d.source.y}, 
+    T ${d.target.x} ${d.target.y},
+    Z`;
+
+    return path;
+}
 
 function updateNodes(d, i) {
     // update id # of the node
@@ -189,12 +219,6 @@ function makeLinks() {
         // register time
         date1 = new Date().getTime();
     } 
-
-    // CASE 2: if clicked on itself  
-    else if (previousClick == nowClick){
-//        deselectNode(nowClick);
-//        nodeClicked = false;
-    }
     
     // CASE 3 & 4, forming links
     else {
@@ -301,6 +325,7 @@ function untangle(){
         .on("end", dragended));
    
     analysis(links);  
+    $("#vis-button").show();
     var graphAnalysis = JSON.stringify(links);
 }
 
@@ -354,6 +379,7 @@ function analysis(links){
         .style("z-index", "8");
     
     svg.on("mouseup", null);
+    zoom(svg);
 }
 
 
@@ -361,10 +387,9 @@ function analysis(links){
 function tick() {
   node.attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; });
-  link.attr("d", linkArc);    
+  link.attr("d", butterfly);    
   text.attr("transform", transform);    
 }
-
 
 function transform(d) {
   return "translate(" + d.x + "," + d.y + ")";
@@ -405,3 +430,15 @@ function dragended(d) {
 function zoom_actions(){
       g.attr("transform", d3.event.transform);
 }
+
+/// UI
+$(document).ready(function(){
+    console.log("document ready");
+    $("#vis-button").hide();
+});
+
+$("#vis-button").click(function(){
+     path.attr("d", function(d){
+                                 return butterfly(d);
+                                });
+})
