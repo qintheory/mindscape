@@ -387,7 +387,7 @@ function analysis(links){
 function tick() {
   node.attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; });
-  link.attr("d", butterfly);    
+  link.attr("d", linkArc);    
   text.attr("transform", transform);    
 }
 
