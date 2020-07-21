@@ -56,8 +56,8 @@ d3.json("data/mindscape.json").then(function(links) {
     var path = g.selectAll("path")
         .data(links)
         .enter().append("path")
-        .style("fill", "#669999")
-        .style("stroke", "none")
+        .style("fill", "aliceblue")
+        .style("stroke", "#333")
         .style("opacity", "0.5")
         .attr("class", "link").attr("marker-end", "url(#end)");
 
@@ -125,6 +125,91 @@ d3.json("data/mindscape.json").then(function(links) {
     function transform(d) {
       return "translate(" + d.x + "," + d.y + ")";
     }
+    /// UI
+    $(document).ready(function(){
+        console.log("document ready");
+        $("#light").hide();
+    });
+
+    $("#light").click(function(){
+        $("#light").toggle();
+        backgroundColor = "light";
+        console.log(backgroundColor);
+        $("#dark").toggle();
+        setBackground();
+
+    })
+
+    $("#dark").click(function(){
+        $("#dark").toggle();
+        backgroundColor = "dark";
+        console.log(backgroundColor);
+        $("#light").toggle();
+        setBackground();
+    })
+
+    function setBackground(){
+        if(backgroundColor === "dark"){
+        $("body").css({
+            "background-color": "#16103b", 
+        });
+            
+        $(".nav-container").css({
+            "background-color": "#16103b", 
+        }); 
+        
+        $(".content-stripe").css({
+            "background-color": "#16103b", 
+        });   
+            
+        $(".content-stripe-right").css({
+            "background-color": "#16103b", 
+        });    
+        
+        $(".button").css({
+            "background-color": "#323056", 
+        }); 
+        
+        $(".home-title").css({
+            "color": "#323056", 
+        }); 
+             
+            
+        path.style("fill", "#f7dd16")
+            .style("stroke", "none");
+            
+        text.style("fill", "aliceblue");    
+        console.log("background is light");
+        } else {
+        $("body").css({
+            "background-color": "#669999",
+        });
+        $(".nav-container").css({
+            "background-color": "#669999", 
+        }); 
+        $(".content-stripe").css({
+            "background-color": "#669999", 
+        });     
+        $(".content-stripe-right").css({
+            "background-color": "#669999", 
+        }); 
+        
+        $(".button").css({
+            "background-color": "#7ea3a2", 
+        }); 
+        
+        $(".home-title").css({
+            "color": "#669999", 
+        });     
+            
+        path.style("fill", "aliceblue")
+            .style("stroke", "#333");
+            
+        text.style("fill", "#333"); 
+            
+        console.log("background is dark");
+        }
+    }    
 })
 .catch(function(error){
     console.log("error")

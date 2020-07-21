@@ -5,6 +5,7 @@ var id = 0;
 var size = 1;
 var svgNodeCount = 0;    
 var nodeNum;
+var vis = false;
     
 var previousClick = null;
 var nodeClicked = false;
@@ -397,15 +398,45 @@ function transform(d) {
 
 // MAKING ARC as links    
 function linkArc(d) {
+  // drawing regular diagram
   var dx = d.target.x - d.source.x,
       dy = d.target.y - d.source.y,
       dr = Math.sqrt(dx * dx + dy * dy);
     
   var r = 25,
       l = Math.sqrt(dx * dx + r * r);
-    
-  return "M" + d.source.x + "," + d.source.y + "A" + l + "," + l + " 0 0,1 " + d.target.x + "," + d.target.y ;
+  
+  let path = "M" + d.source.x + "," + d.source.y + "A" + l + "," + l + " 0 0,1 " + d.target.x + "," + d.target.y  
+  
+// drawing butter fly
+  var dx2 = parseFloat(d.target.x) - parseFloat(d.source.x);
+  var dy2 = parseFloat(d.target.y) - parseFloat(d.source.y);
+  var dr2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+  var r2 =  d.source.name.size*10; 
+  var xPad,
+      yPad;
+  
+
+  if(d.target.x < d.source.x) {
+            xPad = d.source.x - r2;
+        } else {
+            xPad = d.source.x + r2;
+        }
         
+        if(d.target.y < d.source.y) {
+            yPad = d.source.y + r2;
+        } else {
+            yPad = d.source.y - r2;
+        }
+        
+        l2 = Math.sqrt(dx2 * dx2 + r2 * r2);   
+        let tearWidth = 1.05;
+        let path2 = 
+        `M ${d.target.x} ${d.target.y}, 
+        Q ${xPad*tearWidth} ${yPad*tearWidth}, ${d.source.x} ${d.source.y}, 
+        T ${d.target.x} ${d.target.y},
+        Z`;   
+      return path;
 }
 
 // DR
@@ -435,10 +466,89 @@ function zoom_actions(){
 $(document).ready(function(){
     console.log("document ready");
     $("#vis-button").hide();
+    $("#light").hide();
 });
 
 $("#vis-button").click(function(){
-     path.attr("d", function(d){
-                                 return butterfly(d);
-                                });
+    console.log(vis);
 })
+
+$("#light").click(function(){
+$("#light").toggle();
+backgroundColor = "light";
+console.log(backgroundColor);
+$("#dark").toggle();
+setBackground();
+
+})
+
+$("#dark").click(function(){
+$("#dark").toggle();
+backgroundColor = "dark";
+console.log(backgroundColor);
+$("#light").toggle();
+setBackground();
+})
+
+function setBackground(){
+if(backgroundColor === "dark"){
+$("body").css({
+    "background-color": "#16103b", 
+});
+
+$(".nav-container").css({
+    "background-color": "#16103b", 
+}); 
+
+$(".content-stripe").css({
+    "background-color": "#16103b", 
+});   
+
+$(".content-stripe-right").css({
+    "background-color": "#16103b", 
+});    
+
+$(".button").css({
+    "background-color": "#323056", 
+}); 
+
+$(".home-title").css({
+    "color": "#323056", 
+}); 
+
+
+path.style("fill", "#f7dd16")
+    .style("stroke", "none");
+
+text.style("fill", "aliceblue");    
+console.log("background is light");
+} else {
+$("body").css({
+    "background-color": "#669999",
+});
+$(".nav-container").css({
+    "background-color": "#669999", 
+}); 
+$(".content-stripe").css({
+    "background-color": "#669999", 
+});     
+$(".content-stripe-right").css({
+    "background-color": "#669999", 
+}); 
+
+$(".button").css({
+    "background-color": "#7ea3a2", 
+}); 
+
+$(".home-title").css({
+    "color": "#669999", 
+});     
+
+path.style("fill", "aliceblue")
+    .style("stroke", "#333");
+
+text.style("fill", "#333"); 
+
+console.log("background is dark");
+}
+}
